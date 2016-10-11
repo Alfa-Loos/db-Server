@@ -1,0 +1,328 @@
+##################################
+#
+# Config Datei für das Rechtesystem
+# sollte ich bei Gelegenheit mal 
+
+# umstellen auf XML
+#
+##################################
+##
+#       database config
+#
+##################################
+##
+v_SQL_DATABASE="kp2_report"
+v_SQL_USER="root"
+v_SQL_PASS="kp"  
+##################################
+##
+#	permissions
+#	1:NORMAL - 2:READONLY - 3:WARTUNG - 4:BACKUP
+#	5:ROOT
+#
+v_PERM_1="SELECT, INSERT, UPDATE, DELETE"
+v_PERM_2="SELECT"
+v_PERM_3="SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, SHOW VIEW"
+v_PERM_4="SELECT, FILE"
+v_PERM_5="ALL"
+v_PERM_6="PROCESS, SELECT, SHOW VIEW, REPLICATION CLIENT"   # vividcortex
+##################################
+##
+#	Alle USEr die angelegt werden sollen
+#	NUmmer in der Passwortdatei angeben
+#
+## User Konten
+v_POS_user="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20"
+#v_POS_user="1"
+## Server Konten
+v_POS="$v_POS_user 51 52 53 54 55 56 57"   
+
+##	Alle die gelöscht werden sollen
+#
+v_POS_del=$v_POS   
+#v_POS_del="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33"
+
+##################################
+# Passwoerter
+##################################
+## 	Wenn die Felder v_SQL_DB & v_PWD leer sind,
+##	werden default Werte eingesetzt.
+##	dann ist PWD und DB = username, bzw. werden aus diesem
+##	zusammengesetzt.
+##
+##################################
+## default USER Tabellen
+##################################
+DBx="kp_today kp_alfa"
+
+
+##################################
+## default USER
+##################################
+## User:  1
+v_GKD[1]="31.12.2017"
+v_USER[1]="alfa"
+v_PWD[1]="angelita"
+v_PERM[1]="5"
+v_HOSTS[1]="% 192.168.0.0/255.255.0.0"
+v_SQL_DB[1]="default kp_____ cms_dev googleloc_dev criteo_dev e2qv_dev netslave_dev"
+
+##################################
+## User:  2
+v_GKD[2]="31.12.2017"
+v_USER[2]="user"
+v_PWD[2]="users"
+v_PERM[2]="5"
+v_HOSTS[2]="% 192.168.0.0/255.255.0.0"
+v_SQL_DB[2]="default"
+##################################
+
+## User:  3
+v_GKD[3]="31.12.2017"
+v_USER[3]="frontend"
+v_PWD[3]="frontend"
+v_PERM[3]="3"
+v_HOSTS[3]="192.168.0.0/255.255.0.0"
+v_SQL_DB[3]="default cms_dev netslave_dev criteo_dev e2qv_dev"
+
+
+##################################
+## Entwickler
+##################################
+## User:  4
+v_GKD[4]="31.12.2017"
+v_USER[4]="chris"
+v_PWD[4]="chris"
+v_PERM[4]="5"
+v_HOSTS[4]="192.168.0.0/255.255.0.0"
+v_SQL_DB[4]="default"
+##################################
+## User:  5
+v_GKD[5]="31.12.2017"
+v_USER[5]="jan"
+v_PWD[5]="jan"
+v_PERM[5]="5"
+v_HOSTS[5]="192.168.0.0/255.255.0.0"
+v_SQL_DB[5]="default"
+##################################
+## User:  6
+v_GKD[6]="31.12.2017"
+v_USER[6]="hagen"
+v_PWD[6]="hagen"
+v_PERM[6]="5"
+v_HOSTS[6]="192.168.0.0/255.255.0.0 172.20.0.0/255.255.0.0"
+v_SQL_DB[6]="default"
+##################################
+## User:  7
+v_GKD[7]="31.12.2017"
+v_USER[7]="hendrik"
+v_PWD[7]="hendrik"
+v_PERM[7]="5"
+v_HOSTS[7]="192.168.0.0/255.255.0.0"
+v_SQL_DB[7]="default"
+##################################
+## User:  8
+v_GKD[8]="31.12.2017"
+v_USER[8]="mike"
+v_PWD[8]="mike"
+v_PERM[8]="5"
+v_HOSTS[8]="192.168.0.0/255.255.0.0"
+v_SQL_DB[8]="default"
+##################################
+## User:  9
+v_GKD[9]="31.12.2017"
+v_USER[9]="sascha"
+v_PWD[9]="sascha"
+v_PERM[9]="3"
+v_HOSTS[9]="192.168.0.0/255.255.0.0"
+v_SQL_DB[9]="default"
+##################################
+## User:  10
+v_GKD[10]="31.12.2017"
+v_USER[10]="thilo"
+v_PWD[10]="thilo"
+v_PERM[10]="5"
+v_HOSTS[10]="192.168.0.0/255.255.0.0"
+v_SQL_DB[10]="default"
+##################################
+## User:  11
+v_GKD[11]="30.05.2017"
+v_USER[11]="denis"
+v_PWD[11]="8N3Y6"
+v_PERM[11]="3"
+v_HOSTS[11]="192.168.0.0/255.255.0.0"
+v_SQL_DB[11]="default"
+##################################
+## User:  12
+v_GKD[12]="31.12.2017"
+v_USER[12]="bennet"
+v_PWD[12]="dick"
+v_PERM[12]="5"
+v_HOSTS[12]="192.168.0.0/255.255.0.0"
+v_SQL_DB[12]="default"
+
+##################################
+## User:  13   Stefan
+v_GKD[13]="31.12.2017"
+v_USER[13]="stefan"
+v_PWD[13]="sAcyF8k6OK"      
+v_PERM[13]="3"
+v_HOSTS[13]="192.168.0.0/255.255.0.0"
+v_SQL_DB[13]="default"
+##################################
+## User:  14
+v_GKD[14]="31.12.2017"
+v_USER[14]="wchris"						
+v_PWD[14]="kon.0143"      
+v_PERM[14]="5"							
+#v_HOSTS[14]="176.28.24.78 176.28.24.70 176.28.24.170 176.28.24.168 192.168.0.0/255.255.0.0"
+v_HOSTS[14]="192.168.0.0/255.255.0.0"
+v_SQL_DB[14]="default" 
+##################################
+## User:  15
+v_GKD[15]="30.11.2017"
+v_USER[15]="balex"						#julius"
+v_PWD[15]="balex"
+v_PERM[15]="2"
+v_HOSTS[15]="192.168.0.0/255.255.0.0"
+v_SQL_DB[15]="default"
+##################################
+## User: 16 Thomas Thiele
+v_GKD[16]="31.12.2017"
+v_USER[16]="thomas"
+v_PWD[16]="elcheffe"
+v_PERM[16]="5"
+v_HOSTS[16]="192.168.0.0/255.255.0.0"
+v_SQL_DB[16]="default"
+##################################
+## User: 17 Alexander
+v_GKD[17]="30.05.2018"
+v_USER[17]="alexander"
+v_PWD[17]="alexander"
+v_PERM[17]="2"
+v_HOSTS[17]="192.168.0.0/255.255.0.0 %"
+v_SQL_DB[17]="kp_today"
+##################################
+## User: 18 Dennis für Excel
+v_GKD[18]="30.05.2015"
+v_USER[18]="denis-user"
+v_PWD[18]="d3e7n4n2y"
+v_PERM[18]="2"
+v_HOSTS[18]="192.168.0.0/255.255.0.0"
+v_SQL_DB[18]="kp2_report"
+##################################
+# Dennis Hägler
+## User:  19   
+v_GKD[19]="31.12.2017"
+v_USER[19]="hdennis"
+v_PWD[19]="hdennis"
+v_PERM[19]="3"
+v_HOSTS[19]="192.168.0.0/255.255.0.0"
+v_SQL_DB[19]="default"
+##################################
+# okluge
+## User:  20  
+v_GKD[20]="31.12.2015"
+v_USER[20]="okluge"
+v_PWD[20]="okl.user"
+v_PERM[20]="2"  
+v_HOSTS[20]="192.168.0.0/255.255.0.0"
+v_SQL_DB[20]="kp2_0___"
+
+##################################
+##### alte kp2_report Rechte  ####
+##################################
+# Chriss Rahles Gast
+v_GKD[31]="31.12.2014"
+v_USER[31]="crg" 
+v_PWD[31]="user"    
+v_PERM[31]="5"   
+v_HOSTS[31]="192.168.0.0/255.255.0.0"
+v_SQL_DB[31]="default"
+
+##################################
+# Hendrik vivigcortex
+v_GKD[32]="31.12.2015"
+v_USER[32]="vividcortex" 
+v_PWD[32]="huvnDvwqHaDbAxAzoO" 
+v_PERM[32]="6"   
+v_HOSTS[32]="localhost 127.0.0.1"
+v_SQL_DB[32]="kp_alfa kp2_today kp_thilo kp_hendrik kp_mike"
+
+
+##################################
+# Andreas Müller
+v_GKD[33]="30.05.2014"
+v_USER[33]="mandreas"  
+v_PWD[33]="man8e9x4y8" 
+v_PERM[33]="2"   
+v_HOSTS[33]="192.168.0.0/255.255.0.0"
+v_SQL_DB[33]="kp2_report"
+
+
+
+
+
+
+##################################
+# Server Konten
+##################################
+## User:  51
+v_GKD[51]="30.05.2015"
+v_USER[51]="dvdh"
+v_PWD[51]="dvdh"
+v_PERM[51]="3"
+v_HOSTS[51]="192.168.0.0/255.255.0.0 176.28.24.64/255.255.255.224 176.28.24.160/255.255.255.224 192.168.0.0/255.255.0.0"
+v_SQL_DB[51]="default"
+##################################
+## User:  52   ### egon
+v_GKD[52]="31.12.2015"
+v_USER[52]="egon"
+v_PWD[52]="sAcyF8HesgSErL2ek6OK"      
+v_PERM[52]="1"
+v_HOSTS[52]="176.28.24.0/255.255.255.0"
+v_SQL_DB[52]="kp2_today"
+##################################
+## User:  53
+v_GKD[53]="31.12.2015"
+v_USER[53]="zipper"                         # tp
+v_PWD[53]="ErL2ek6OK"
+v_PERM[53]="3"
+v_HOSTS[53]="192.168.0.0/255.255.0.0"       # "176.28.24.64/255.255.255.224 176.28.24.160/255.255.255.224"
+v_SQL_DB[53]="kp27_zipper kp27_netslave kp27_e2qv"
+##################################
+## User:  54
+v_GKD[54]="31.12.2015"
+v_USER[54]="archiv"
+v_PWD[54]="kpuser"
+v_PERM[54]="2"
+v_HOSTS[54]="192.168.0.0/255.255.0.0"
+v_SQL_DB[54]="kp2_today kp2_0___"
+
+##################################
+## User: 55 bing
+v_GKD[55]="30.05.2015"
+v_USER[55]="bing"
+v_PWD[55]="bing"
+v_PERM[55]="5"
+v_HOSTS[55]="192.168.0.0/255.255.0.0"
+v_SQL_DB[55]="kp_bing"
+##################################
+## User:  56
+v_GKD[56]="30.05.2015"
+v_USER[56]="oliverkl"
+v_PWD[56]="o2l5i7v8er"
+v_PERM[56]="2"
+v_HOSTS[56]="192.168.0.0/255.255.0.0"
+v_SQL_DB[56]="kp2_report"
+##################################
+# General-Mailer
+## User:  57   
+v_GKD[57]="31.12.2015"
+v_USER[57]="general_mailer"
+v_PWD[57]="gmf46j"
+v_PERM[57]="5"
+v_HOSTS[57]="192.168.0.0/255.255.0.0"
+v_SQL_DB[57]="kp2_today"
+
+
