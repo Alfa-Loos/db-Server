@@ -1,5 +1,5 @@
 !/bin/bash
-##
+###
 #	This script revokes all permissions, and grant all permissions
 #	for the database to the standard game user, the maintenance user,
 #	the backup user and the ticket user for the ticketoptions-tool
@@ -9,13 +9,13 @@
 #	Andreas.Loos@kaeuferportal.de
 #
 #	(c) beko Käuferportal GmbH
-#
+###
 clear
 search_dir="/opt/scripte/Rechte"
 
 ##
 #	for debugging use
-#
+#	Funktion wird noch nicht unterstützt
 v_DEBUG=false
 
 ##
@@ -27,22 +27,29 @@ v_READONLY_TABLES=""
 #	SQL Server
 #
 v_SQL_IP="localhost"
-#v_SQL_USER="root"
-#v_SQL_PASS="kp"
+v_SQL_USER="root"
+v_SQL_PASS="kp"
+v_SQL_PORT="3307"
 
 ##
 #	path to tempfile
 #
 P_TEMP="/tmp/setDatabasePermissions.tmp"
 
+### Welche User nicht gelöscht werden dürfen.
+## where NOT (user='root' OR user='cmon' OR user='debian-sys-maint' OR user='reploffice_27' OR user='cluster')
+v_SQL_NOT_DEL_USER="user='root' OR user='cmon' OR user='debian-sys-maint' OR user='reploffice_27' OR user='cluster'"
+
+
 ### leere globale Variablen
-v_CONNECT="mysql -pkp"
+v_CONNECT=""
 v_aktDatum=""
 v_Datum=""
 Dateiname=""
 
 #########  ENDE der Variablendefinitionen ###########
 
+### Funktionen
 
 function db_connect_string()
 	{
@@ -54,15 +61,15 @@ function db_connect_string()
 	#
 	#printf "password for %s on the local database: " "${v_SQL_DATABASE}"
 	echo "Password für ${v_SQL_USER} auf der localen Databank: " "${v_SQL_DATABASE} ist ${v_SQL_PASS}"
+  echo "Verbinde mich mit $v_SQL_IP auf Port $v_SQL_PORT"
 	#read v_SQL_PASS
 	
 	##
 	#	bauen des connect string
 	#
-	v_CONNECT="mysql  -u${v_SQL_USER} -p${v_SQL_PASS}"
+	v_CONNECT="mysql  -u${v_SQL_USER} -p${v_SQL_PASS} -P$v_SQL_PORT"
 }
 
-### Funktionen
 
 ## Folgende Dateien stehen zur Verfügung
 function direktory_einlesen()
@@ -113,27 +120,28 @@ function default_key_woerter()
 	## Wenn keine Datenbank im Array steht tragen wir die default Datenbanken ein
 	## Default einstellungen
 
-#	echo "eingestellte default-Variable: $DBx"
-#	echo "Jezt testen wir das ganze auf dem default Vermerk"
-#	echo "Variable v_SQL_DB vom User:  ${v_SQL_DB[$POS]} " 
+	# echo "eingestellte default-Variable: $DBx"
+	# echo "Jezt testen wir das ganze auf dem default Vermerk"
+	# echo "Variable v_SQL_DB vom User:  ${v_SQL_DB[$POS]} " 
 	v_DB=""
 	for DB_default in ${v_SQL_DB[$POS]}
 	  do
-		echo " Variable die in die IF Anweisung reingeht:  $DB_default"
-		if [ $DB_default = 'default' ]
+		#echo " Variable die in die IF Anweisung reingeht:  $DB_default"
+	    ### default 
+	    if [ $DB_default = 'default' ]
 		  then
-		  v_User="kp_${v_USER[$POS]}"
-		  v_DB="$v_DB $DBx" # $v_User"
-#		  echo "1 default: $v_User"
-                elif [ $DB_default = 'dbUserName' ]  # ob der Datenbankname für den User angelegt werden soll
+    		     v_User="kp_${v_USER[$POS]}"
+	    	     v_DB="$v_DB $DBx" # $v_User"
+		     # echo "1 default: $v_User"
+	     elif [ $DB_default = 'dbUserName' ]  # ob der Datenbankname für den User angelegt werden soll
 		  then
-		  v_User="kp_${v_USER[$POS]}"
-                  v_DB="$v_DB $v_User"
-#		  echo "2 User Datenbank"
-		else
-		  v_DB="$v_DB $DB_default"
-#		  echo "3 eingetragene Datenbanken"
-		fi
+		     v_User="kp_${v_USER[$POS]}"
+	             v_DB="$v_DB $v_User"
+		     #	echo "2 User Datenbank"
+		  else
+		     v_DB="$v_DB $DB_default"
+		     # echo "3 eingetragene Datenbanken"
+	     fi
 	done
 }
 
@@ -159,9 +167,11 @@ function ausgabe_der_grantanweisungen()
 			if [[ "$DB" =~ "." ]]
 			then
 			  echo "Tabelle gefunden"
-			  echo "GRANT $PERM ON $DB TO '${v_USER[$POS]}'@'$SERVER' IDENTIFIED BY '${v_PWD[$POS]}'" | ${v_CONNECT} 
+			  echo "GRANT $PERM ON $DB TO '${v_USER[$POS]}'@'$SERVER' IDENTIFIED BY '${v_PWD[$POS]}'" 
+			  echo "GRANT $PERM ON $DB TO '${v_USER[$POS]}'@'$SERVER' IDENTIFIED BY '${v_PWD[$POS]}'" | ${v_CONNECT}
 			 else
 			  echo "Tabellenangabe nicht gefunden"
+			  echo "GRANT $PERM ON $DB.* TO '${v_USER[$POS]}'@'$SERVER' IDENTIFIED BY '${v_PWD[$POS]}'"
 			  echo "GRANT $PERM ON $DB.* TO '${v_USER[$POS]}'@'$SERVER' IDENTIFIED BY '${v_PWD[$POS]}'" | ${v_CONNECT} 
 			fi
 		done
@@ -172,7 +182,7 @@ function ausgabe_der_grantanweisungen()
 ### Prüfen ob das Datum noch gültig ist
 function datum_checken()
 	{
-	echo "Datum Datenbank: $v_Datum     und das aktuelle Datum:  $v_aktDatum"
+	#echo "Datum Datenbank: $v_Datum     und das aktuelle Datum:  $v_aktDatum"
 	if [ $v_Datum -ge $v_aktDatum  ]
 	#if [ $v_aktDatum -ge $v_Datum  ]
 	  then
@@ -181,11 +191,12 @@ function datum_checken()
 		PERM="v_PERM_"${v_PERM[$POS]}
 		eval PERM=\${$PERM}
 		# alle Hosts eintragen
-		#echo "Welche Hosts sollen eingetragen werden:  ${v_HOSTS[$POS]}"
+		echo "Welche Hosts sollen eingetragen werden:  ${v_HOSTS[$POS]}"
 		default_key_woerter
 		ausgabe_der_grantanweisungen	
+		sleep 0.5
 	else
-		echo " -->> Datum abgelaufen"
+		echo " -->> Datum abgelaufen" 
 	fi
 }
 
@@ -194,22 +205,25 @@ function datum_checken()
 ## Variablen prüfen
 ## Datum checken
 ## Wieder reinschreiben aller Rechte
+
 function variablen_checken()
 	{
 	echo ""
 	echo "Positions (max):" $v_POS
 	for POS in $v_POS
 		do
+		echo ""
+		echo ""
 		echo "###############################"
 		echo "aktuelle Position: "$POS
 		zeichenkette=${v_GKD[$POS]}
 		v_Datum="${zeichenkette:6:4}-${zeichenkette:3:2}-${zeichenkette:0:2}"
-		echo  "Teste folgendes Datum auf Gültigkeit: $zeichenkette" 
-	#	echo "Habe es umgewandelt:  $v_Datum"
+		echo  -n "Teste folgendes Datum auf Gültigkeit: $zeichenkette" 
+	  ##	echo "Habe es umgewandelt:  $v_Datum"
 		v_Datum=$(date -d $v_Datum +%s)
-	#	echo "in Unixtime umgewandelt:  $v_Datum"
+	  ##	echo "in Unixtime umgewandelt:  $v_Datum"
 		v_aktDatum=$(date +%s)
-	#	echo "$v_Datum muss groesser sein als $v_aktDatum"
+	  ##	echo "$v_Datum muss groesser sein als $v_aktDatum"
 		datum_checken
 	done
 }
@@ -224,8 +238,10 @@ function ende()
 
 function user_loeschen()
 	{
-	va_User=$(echo "select user from mysql.user where NOT (user='root' OR user='cmon' OR user='debian-sys-maint')" | /usr/bin/mysql -pkp)
-	for user in $va_User
+	echo "Lösche alle Usserrechte"
+	sleep 2
+	  va_User=$(echo "select user from mysql.user where NOT (${v_SQL_NOT_DEL_USER})" | /usr/bin/mysql -pkp)
+	  for user in $va_User
 	  do
 	  va_host=$(echo "select host from mysql.user where user='$user'" | /usr/bin/$v_CONNECT )
 	  for Host in $va_host
@@ -237,6 +253,7 @@ function user_loeschen()
 		fi
 	  done
 	done
+	echo5
 }
 
 
@@ -246,21 +263,24 @@ function point()
 }
 
 
-
+##################
 ###### main ######
-
+direktory_einlesen
+ip_herausfinden                                                                
+datei_ip_infos_ausgeben                                                        
+. $Dateiname    
+db_connect_string
 user_loeschen 
 
-direktory_einlesen
-ip_herausfinden
+##################
+#direktory_einlesen
+#ip_herausfinden
 
-datei_ip_infos_ausgeben
-. $Dateiname
+#datei_ip_infos_ausgeben
+#. $Dateiname
 #echo5
 
-db_connect_string
 variablen_checken   # ruft datum_checken, default_key_woerter & ausgabe_der_grantanweisungen auf
-
 ende
 
-
+	
